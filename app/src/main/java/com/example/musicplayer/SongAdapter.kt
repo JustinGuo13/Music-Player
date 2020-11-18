@@ -1,4 +1,4 @@
-package com.marceaudavid.musicplayer
+package com.example.musicplayer
 
 import android.media.MediaMetadata
 import android.support.v4.media.MediaBrowserCompat

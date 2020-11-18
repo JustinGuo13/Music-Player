@@ -1,4 +1,4 @@
-package com.marceaudavid.musicplayer
+package com.example.musicplayer
 
 import android.Manifest
 import android.content.ComponentName

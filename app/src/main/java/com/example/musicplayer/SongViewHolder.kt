@@ -1,4 +1,4 @@
-package com.marceaudavid.musicplayer
+package com.example.musicplayer
 
 import android.view.View
 import android.view.ViewGroup

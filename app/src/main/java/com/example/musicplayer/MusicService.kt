@@ -1,4 +1,4 @@
-package com.marceaudavid.musicplayer
+package com.example.musicplayer
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,6 +10,7 @@ import android.media.AudioManager
 import android.media.MediaMetadata
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.service.media.MediaBrowserService
@@ -19,6 +20,7 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.media.MediaBrowserServiceCompat
 import androidx.media.session.MediaButtonReceiver
@@ -47,6 +49,7 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
         MediaStore.Audio.Media.SIZE
     )
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
 
@@ -224,6 +227,7 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
         result.sendResult(songList)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun bundleToMetadata(bundle: Bundle): MediaMetadataCompat {
         return metadataBuilder
             .putString(
@@ -339,6 +343,7 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
             )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun getSongs() {
         val query = contentResolver.query(
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
