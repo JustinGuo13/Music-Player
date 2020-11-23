@@ -36,11 +36,11 @@
             android:layout_marginTop="16dp"
             android:text="Title"
             android:textColor="#070707"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/artist"
+            app:layout_constraintEnd_toStartOf="@+id/search"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/art"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/artist"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/artist"
@@ -49,11 +49,11 @@
             android:layout_marginBottom="76dp"
             android:text="Artist"
             android:textColor="#000000"
-            app:layout_constraintTop_toBottomOf="@+id/title"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/search"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/art" />
+            app:layout_constraintStart_toEndOf="@+id/art"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <ImageButton
             android:id="@+id/back"
@@ -63,7 +63,6 @@
             android:layout_marginTop="92dp"
             android:layout_marginEnd="64dp"
             android:background="@drawable/ic_back"
-            android:rotation="180"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/play"
             app:layout_constraintStart_toEndOf="@+id/art"
@@ -105,6 +104,17 @@
             app:layout_constraintStart_toEndOf="@+id/stop"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
+
+        <ImageButton
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.183"
+            app:srcCompat="@drawable/ic_search" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

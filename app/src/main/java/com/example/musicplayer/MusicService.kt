@@ -214,6 +214,7 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
         startForeground(2, buildNotification().build())
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCompletion(mp: MediaPlayer?) {
         val song = getNextSong(songList, currentSongId)
         currentSongId = song?.description?.mediaId.toString()
@@ -294,7 +295,10 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
         mediaId: String
     ): MediaBrowserCompat.MediaItem? {
         val index = songList.indexOfFirst { it.mediaId == mediaId }
-        return songList[index + 1]
+        if(index == songList.lastIndex)
+            return songList[0]
+        else
+            return songList[index+1]
     }
 
     private fun getPrevSong(
@@ -330,21 +334,21 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
             )
             .addAction(
                 NotificationCompat.Action(
-                    R.drawable.ic_back,
-                    "stop",
-                    MediaButtonReceiver.buildMediaButtonPendingIntent(
-                        this,
-                        PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
-                    )
-                )
-            )
-            .addAction(
-                NotificationCompat.Action(
                     R.drawable.ic_pause,
                     "pause",
                     MediaButtonReceiver.buildMediaButtonPendingIntent(
                         this,
                         PlaybackStateCompat.ACTION_PAUSE
+                    )
+                )
+            )
+            .addAction(
+                NotificationCompat.Action(
+                    R.drawable.ic_back,
+                    "stop",
+                    MediaButtonReceiver.buildMediaButtonPendingIntent(
+                        this,
+                        PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
                     )
                 )
             )

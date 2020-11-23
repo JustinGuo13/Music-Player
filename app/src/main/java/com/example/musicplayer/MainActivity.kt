@@ -2,9 +2,12 @@ package com.example.musicplayer
 
 import android.Manifest
 import android.content.ComponentName
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.media.MediaMetadata
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
@@ -38,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var play: ImageButton
     private lateinit var stop: ImageButton
     private lateinit var next: ImageButton
+    private lateinit var search: ImageButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         play = findViewById(R.id.play)
         stop = findViewById(R.id.stop)
         next = findViewById(R.id.next)
+        search = findViewById(R.id.search)
 
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -152,6 +157,9 @@ class MainActivity : AppCompatActivity() {
             next.setOnClickListener {
                 mediaController.transportControls.skipToNext()
             }
+            search.setOnClickListener {
+                lyricsSearch(mediaController.metadata.getString(MediaMetadata.METADATA_KEY_TITLE))
+            }
             // Register a Callback to stay in sync
             mediaController.registerCallback(controllerCallbacks)
         }
@@ -185,5 +193,10 @@ class MainActivity : AppCompatActivity() {
                 holder.favorite.background = getDrawable(R.drawable.ic_favorite_outline)
             }
         }
+    }
+
+    fun lyricsSearch(currentTitle: Any) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=lyrics%20${currentTitle}"))
+        startActivity(intent)
     }
 }
