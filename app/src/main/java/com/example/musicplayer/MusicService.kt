@@ -79,6 +79,7 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
             stateBuilder = PlaybackStateCompat.Builder()
                 .setActions(
                     PlaybackStateCompat.ACTION_PLAY
+                            or PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
                             or PlaybackStateCompat.ACTION_PLAY_PAUSE
                             or PlaybackStateCompat.ACTION_PAUSE
                             or PlaybackStateCompat.ACTION_SKIP_TO_NEXT
@@ -157,6 +158,27 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
                 override fun onSkipToNext() {
                     Log.d("call", "next")
                     val song = getNextSong(songList, currentSongId)
+                    currentSongId = song?.description?.mediaId.toString()
+                    setMetadata(song?.description?.extras?.let { bundleToMetadata(it) })
+                    player.apply {
+                        stop()
+                        reset()
+                        setDataSource(this@MusicService, song?.description?.mediaUri)
+                        prepareAsync()
+                    }
+                    setMetadata(song?.description?.extras?.let { bundleToMetadata(it) })
+                    setPlaybackState(
+                        stateBuilder.setState(
+                            PlaybackStateCompat.STATE_PLAYING,
+                            PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN,
+                            1.0F
+                        ).build()
+                    )
+                }
+
+                override fun onSkipToPrevious() {
+                    Log.d("call", "back")
+                    val song = getPrevSong(songList, currentSongId)
                     currentSongId = song?.description?.mediaId.toString()
                     setMetadata(song?.description?.extras?.let { bundleToMetadata(it) })
                     player.apply {
@@ -275,6 +297,14 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
         return songList[index + 1]
     }
 
+    private fun getPrevSong(
+        songList: List<MediaBrowserCompat.MediaItem>,
+        mediaId: String
+    ): MediaBrowserCompat.MediaItem? {
+        val index = songList.indexOfFirst { it.mediaId == mediaId }
+        return songList[index - 1]
+    }
+
     private fun buildNotification(): NotificationCompat.Builder {
         val controller = mediaSession?.controller
         val metadata = controller?.metadata?.bundle
@@ -293,6 +323,16 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
                 MediaButtonReceiver.buildMediaButtonPendingIntent(
                     this,
                     PlaybackStateCompat.ACTION_STOP
+                )
+            )
+            .addAction(
+                NotificationCompat.Action(
+                    R.drawable.ic_back,
+                    "stop",
+                    MediaButtonReceiver.buildMediaButtonPendingIntent(
+                        this,
+                        PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+                    )
                 )
             )
             .addAction(

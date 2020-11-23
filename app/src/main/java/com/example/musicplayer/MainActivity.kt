@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var art: ImageView
     private lateinit var title: TextView
     private lateinit var artist: TextView
+    private lateinit var back: ImageButton
     private lateinit var play: ImageButton
     private lateinit var stop: ImageButton
     private lateinit var next: ImageButton
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         art = findViewById(R.id.art)
         title = findViewById(R.id.title)
         artist = findViewById(R.id.artist)
+        back = findViewById(R.id.back)
         play = findViewById(R.id.play)
         stop = findViewById(R.id.stop)
         next = findViewById(R.id.next)
@@ -140,6 +142,9 @@ class MainActivity : AppCompatActivity() {
                     mediaController.transportControls.play()
                     play.background = getDrawable(R.drawable.ic_pause)
                 }
+            }
+            back.setOnClickListener {
+                mediaController.transportControls.skipToPrevious()
             }
             stop.setOnClickListener {
                 mediaController.transportControls.stop()
