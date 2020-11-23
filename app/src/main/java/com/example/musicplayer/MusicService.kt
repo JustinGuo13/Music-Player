@@ -302,7 +302,10 @@ class MusicService : MediaBrowserServiceCompat(), MediaPlayer.OnPreparedListener
         mediaId: String
     ): MediaBrowserCompat.MediaItem? {
         val index = songList.indexOfFirst { it.mediaId == mediaId }
-        return songList[index - 1]
+        if(index == 0)
+            return songList[index]
+        else
+            return songList[index - 1]
     }
 
     private fun buildNotification(): NotificationCompat.Builder {
