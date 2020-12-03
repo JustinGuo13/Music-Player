@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var stop: ImageButton
     private lateinit var next: ImageButton
     private lateinit var search: ImageButton
-
+    private lateinit var share: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         stop = findViewById(R.id.stop)
         next = findViewById(R.id.next)
         search = findViewById(R.id.search)
+        share = findViewById(R.id.share)
 
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -159,6 +161,18 @@ class MainActivity : AppCompatActivity() {
             }
             search.setOnClickListener {
                 lyricsSearch(mediaController.metadata.getString(MediaMetadata.METADATA_KEY_TITLE))
+            }
+            share.setOnClickListener {
+                    view ->
+                val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                sendIntent.putExtra(
+                    Intent.EXTRA_TEXT,
+                    mediaController.metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
+                )
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Check out this great song!" )
+                sendIntent.type = "text/plain"
+                startActivity(sendIntent)
             }
             // Register a Callback to stay in sync
             mediaController.registerCallback(controllerCallbacks)
